@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Find an Extreme Ray of Unbounded LP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="GZ">
+
+    <!-- Le styles -->
+    <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css" />
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+      .tag-1 {
+        font-size: 13pt;
+      }
+      .tag-2 {
+        font-size: 10pt;
+      }
+      .tag-2 {
+        font-size: 8pt;
+      }
+      .tag-4 {
+        font-size: 6pt;
+     }
+    </style>
+    <link href="/theme/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="/theme/css/font-awesome.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/theme/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/theme/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/theme/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/theme/images/apple-touch-icon-114x114.png">
+
+    <link href="/" type="application/atom+xml" rel="alternate" title="Random Notes ATOM Feed" />
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/index.html">Random Notes </a>
+          <div class="nav-collapse">
+            <ul class="nav">
+                          <li class="divider-vertical"></li>
+                  <li class="active">
+                    <a href="/category/optimizatioon.html">
+						<i class="icon-folder-open icon-large"></i>Optimizatioon
+					</a>
+                  </li>
+
+                          <ul class="nav pull-right">
+                                <li><a href="/archives.html"><i class="icon-th-list"></i>Archives</a></li>
+                          </ul>
+
+            </ul>
+            <!--<p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>-->
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="span9" id="content">
+<section id="content">
+        <article>
+                <header>
+                        <h1>
+                                <a href=""
+                                        rel="bookmark"
+                                        title="Permalink to Find an Extreme Ray of Unbounded LP">
+                                        Find an Extreme Ray of Unbounded LP
+                                </a>
+                        </h1>
+                </header>
+                <div class="entry-content">
+                <div class="well">
+<footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2022-05-22T00:00:00-05:00">
+        <i class="icon-calendar"></i>Sun 22 May 2022
+</abbr>
+<span class="label">By</span>
+<a href="/author/gz.html"><i class="icon-user"></i>GZ</a>
+<span class="label">Category</span>
+<a href="/category/optimizatioon.html"><i class="icon-folder-open"></i>Optimizatioon</a>.
+
+
+<span class="label">Tags</span>
+	<a href="/tag/optimization.html"><i class="icon-tag"></i>optimization</a>
+</footer><!-- /.post-info -->                </div>
+                <p>It is well known that the simplex method will terminate with an extreme ray if an LP is unbounded. But many solver, such as cvxpy, do not necessarily return information about the extreme ray. In fact, they don't necessarily use simplex. A while ago, I wondered how we could find an extreme ray in such a situation. Today, I finally got some answers, which I am sharing here.</p>
+<p>Suppose we have an LP in the general form that is known to be feasible. It is unbounded and we want to find an extreme ray that causes it to be unbounded.</p>
+<div class="math">$$
+\begin{aligned} \text{minimize } &amp;c^Tx \\ \text{s.t.} &amp;Ax \ge b \end{aligned}
+$$</div>
+<p>The above being unbounded is equivalent to its dual (below) being infeasible:</p>
+<div class="math">$$
+\begin{aligned} \text{maximize } &amp;p^Tb \\ \text{s.t. }&amp; p^TA = c^T\\ &amp; p \ge 0 \end{aligned}
+$$</div>
+<p>This is equivalent to the following being infeasible:</p>
+<div class="math">$$
+\begin{aligned} \text{maximize } &amp;0 \\ \text{s.t. }&amp; p^TA = c^T\\ &amp; p \ge 0 \end{aligned}
+$$</div>
+<p>This is equivalent to its dual(below) being unbounded or infeasible:</p>
+<div class="math">$$
+\begin{aligned} \text{minimize } c^Tx \\ \text{s.t. }&amp; Ax \ge 0\\ \end{aligned}
+$$</div>
+<p>Since the above cannot be infeasible, the original problem being unbounded is equivalent to its being unbounded, which is equivalent to the following problem having a finite solution:</p>
+<div class="math">$$
+\begin{aligned} \text{minimize } &amp;f^Tx \\ \text{s.t. }&amp; Ax \ge 0\\ &amp; c^Tx=-1 \end{aligned}
+$$</div>
+<p>, where <span class="math">\(f\)</span> is an arbitrary vector such as 0.</p>
+<p>By this chain of logic, the above problem having a finite solution is equivalent to the original solution being unbounded. Furthermore, if the optimal solution to this problem is a BFS, there will be <span class="math">\(n\)</span> active constraints. Since the last constraint is an equality and always active, there must be <span class="math">\(n-1\)</span>
+constraints in <span class="math">\(Ax\ge0\)</span> that are active. Because <span class="math">\(Ax\ge 0\)</span> is the recession cone of <span class="math">\(Ax\ge b\)</span>, we conclude the optimal solution to the above problem is an extreme ray of the original feasible region.</p>
+<p>To sum up, to find out the extreme ray of the original problem below,</p>
+<div class="math">$$
+\begin{aligned} \text{minimize } &amp;c^Tx \\ \text{s.t.} &amp;Ax \ge b \end{aligned}
+$$</div>
+<p>we can solve the auxiliary problem</p>
+<div class="math">$$
+\begin{aligned} \text{minimize } &amp;f^Tx \\ \text{s.t. }&amp; Ax \ge 0\\ &amp; c^Tx=-1 \end{aligned}
+$$</div>
+<p>, where <span class="math">\(f\)</span> is an arbitrary vector.</p>
+<p>The original problem, assumed to be feasible, is unbounded if and only if the auxiliary problem has a finite optimal solution <span class="math">\(x^*\)</span>. For any feasible solution <span class="math">\(x_0\)</span> of the original problem, <span class="math">\(x_0 + \theta x^*\)</span>  for <span class="math">\(\theta&gt;0\)</span> is also feasible to the original problem and the optimal value goes to <span class="math">\(-\infty\)</span> as <span class="math">\(\theta \rightarrow +\infty\)</span>.  If the auxiliary problem's optimal solution <span class="math">\(x^*\)</span>  is a BFS, then it is an extreme ray of the original problem; otherwise, it is a recession direction that causes the unboundedness but is not an extreme ray.</p>
+<p>Now, the last problem is how we can make sure the solution is a BFS. I can think of two options:</p>
+<ol>
+<li>Some solvers support returning an optimal solution that is guaranteed to be a BFS. For example, in cvxpy for some solvers like Gurobi, we can use<em>prob.solve(solver='GUROBI', bfs=True). </em>In this case, we can set <span class="math">\(f=0\)</span>.</li>
+<li>Some solvers don't guarantee to return a BFS. In this case, we can use a random cost vector <span class="math">\(   f\)</span> in the auxiliary problem and then check if <span class="math">\(n-1\)</span>  constraints in <span class="math">\(Ax\ge0\)</span>  are actually active (for example by checking the dual variables being nonzero). If there are fewer than <span class="math">\(n-1\)</span>  active constraints, then try again using a different random vector. With a random <span class="math">\(f\)</span>, there is a high probability that the auxiliary problem has a unique optimal solution and will have to be a BFS.</li>
+</ol>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+                </div><!-- /.entry-content -->
+        </article>
+</section>
+        </div><!--/span-->
+
+                <div class="span3 well sidebar-nav" id="sidebar">
+<ul class="nav nav-list">
+
+<li class="nav-header"><h4><i class="icon-folder-close icon-large"></i>Categories</h4></li>
+<li>
+<a href="/category/optimizatioon.html">
+    <i class="icon-folder-open icon-large"></i>Optimizatioon
+</a>
+</li>
+
+<li class="nav-header"><h4><i class="icon-tags icon-large"></i>Tags</h4></li>
+<li class="tag-4">
+    <a href="/tag/optimization.html">
+        <i class="icon-tag icon-large"></i>optimization
+    </a>
+</li>
+
+
+</ul>        </div><!--/.well -->
+
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <address id="about">
+                <!-- Proudly powered by <a href="http://pelican.notmyidea.org/">Pelican <i class="icon-external-link"></i></a>,
+                                which takes great advantage of <a href="http://python.org">Python <i class="icon-external-link"></i></a>. -->
+        </address><!-- /#about -->
+
+        <!-- <p>The theme is from <a href="http://twitter.github.com/bootstrap/">Bootstrap from Twitter <i class="icon-external-link"></i></a>,
+                   and <a href="http://fortawesome.github.com/Font-Awesome/">Font-Awesome <i class="icon-external-link"></i></a>, thanks!</p> -->
+      </footer>
+
+    </div><!--/.fluid-container-->
+
+
+
+    <!-- Le javascript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/theme/js/jquery-1.7.2.min.js"></script>
+    <script src="/theme/js/bootstrap.min.js"></script>
+  </body>
+</html>
