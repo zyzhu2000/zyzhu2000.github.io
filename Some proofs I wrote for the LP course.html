@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Random Notes - optimization</title>
+    <title>Some Proofs written for the LP optimization</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="GZ">
@@ -64,7 +64,7 @@
           <div class="nav-collapse">
             <ul class="nav">
                           <li class="divider-vertical"></li>
-                  <li >
+                  <li class="active">
                     <a href="/category/optimizatioon.html">
 						<i class="icon-folder-open icon-large"></i>Optimizatioon
 					</a>
@@ -84,9 +84,20 @@
     <div class="container-fluid">
       <div class="row">
         <div class="span9" id="content">
-        <div class="article">
-                <h1><a href="/Secretary Problem.html">Solving the Secretary Problem Using LP</a></h1>
-                <div class="well small"><footer class="post-info">
+<section id="content">
+        <article>
+                <header>
+                        <h1>
+                                <a href=""
+                                        rel="bookmark"
+                                        title="Permalink to Some Proofs written for the LP optimization">
+                                        Some Proofs written for the LP optimization
+                                </a>
+                        </h1>
+                </header>
+                <div class="entry-content">
+                <div class="well">
+<footer class="post-info">
 <span class="label">Date</span>
 <abbr class="published" title="2022-05-22T00:00:00-05:00">
         <i class="icon-calendar"></i>Sun 22 May 2022
@@ -99,35 +110,31 @@
 
 <span class="label">Tags</span>
 	<a href="/tag/optimization.html"><i class="icon-tag"></i>optimization</a>
-</footer><!-- /.post-info --></div>
-                <div class="summary"><p>Solve the Secretary Problem Using LP</p>
-                        <a class="btn primary xsmall" href="/Secretary Problem.html">more ...</a>
-                </div>
-        </div>
-        <hr />
-        <div class="article">
-                <h1><a href="/Some proofs I wrote for the LP course.html">Some Proofs written for the LP optimization</a></h1>
-                <div class="well small"><footer class="post-info">
-<span class="label">Date</span>
-<abbr class="published" title="2022-05-22T00:00:00-05:00">
-        <i class="icon-calendar"></i>Sun 22 May 2022
-</abbr>
-<span class="label">By</span>
-<a href="/author/gz.html"><i class="icon-user"></i>GZ</a>
-<span class="label">Category</span>
-<a href="/category/optimizatioon.html"><i class="icon-folder-open"></i>Optimizatioon</a>.
-
-
-<span class="label">Tags</span>
-	<a href="/tag/optimization.html"><i class="icon-tag"></i>optimization</a>
-</footer><!-- /.post-info --></div>
-                <div class="summary"><p>Here are some proofs I wrote for the optimization class.</p>
+</footer><!-- /.post-info -->                </div>
+                <p>Here are some proofs I wrote for the optimization class.</p>
 <h1>An extreme point in a polyhedron is equivalent to a BFS</h1>
 <p>Let the polyhedron be <span class="math">\(P=\{x~|~ a_i^T x \le c_i, i=1,\dots, m, x \in R^n \}\)</span>.</p>
 <ol>
 <li>Extreme point =&gt; BFS</li>
 </ol>
-<p>First, we show that at …</p><script type='text/javascript'>if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+<p>First, we show that at least one of the constraints <span class="math">\(a_i^T x \le c_i\)</span> will have to be active. Let <span class="math">\(x_0\)</span> be an extreme point and <span class="math">\(d\in R^n\)</span> be some arbitrary direction.  Assume that <span class="math">\(a_i^T x &lt; c_i\)</span> for <span class="math">\(i=1,\dots, m\)</span>. Then I can always find a small enough <span class="math">\(\epsilon_i\)</span> such that <span class="math">\(a_i^T (x_0 \pm \epsilon_i d) &lt; c_i\)</span>. Let <span class="math">\(\epsilon = \min \{ \epsilon_1,\dots, \epsilon_m \}\)</span>, then we have <span class="math">\(a_i^T (x_0 \pm \epsilon d) &lt; c_i\)</span>.  In other words, <span class="math">\(x_0\)</span> is the midpoint of <span class="math">\((x_0 \pm \epsilon d)\)</span>, which contradicts with the fact that <span class="math">\(x_0\)</span> is an extreme point.</p>
+<p>Since some constraints will have to be active, let <span class="math">\(J\)</span> be the set of indices of the active constraints such that <span class="math">\(a_j^T x_0 = c_j\)</span> for <span class="math">\(j \in J\)</span>. Let <span class="math">\(A\)</span> be a matrix whose rows are <span class="math">\(a_j\)</span>  and <span class="math">\(c\)</span> be a vector of <span class="math">\(c_j\)</span> for <span class="math">\(j \in J\)</span>. By definition, <span class="math">\(A\)</span> is a <span class="math">\(|J| \times n\)</span> matrix and <span class="math">\(Ax_0=c\)</span>. Assume, to the contrary, that <span class="math">\(\text{null}(A) \ne \{0\}\)</span>. Let's take a nonzero vector <span class="math">\(d \in \text{null}(A)\)</span>. We see that <span class="math">\(A (x_0 \pm \epsilon d) =c\)</span> or equivalently <span class="math">\(a_j^T (x_0 \pm \epsilon d) = c_j\)</span> for any <span class="math">\(\epsilon \in R\)</span>. Also, by the logic of the previous paragraph, I can always find some <span class="math">\(\epsilon\)</span> such that <span class="math">\((x_0 \pm \epsilon d)\)</span> satisfies the remaining <span class="math">\(m - |J|\)</span> constraints. Hence, <span class="math">\((x_0 \pm \epsilon d)\)</span>  are in the polyhedron. Then again, <span class="math">\(x_0\)</span> is the midpoint of <span class="math">\((x_0 \pm \epsilon d)\)</span>, which contradicts with the fact that <span class="math">\(x_0\)</span> is an extreme point. This is to say that the <span class="math">\(\text{null}(A)=\{ 0\}\)</span> and so <span class="math">\(Ax=c\)</span> is a unique solution and thus BFS.  </p>
+<ol>
+<li>BFS =&gt; extreme point</li>
+</ol>
+<p>Let <span class="math">\(x_0\)</span> be the BFS such that it is the unique solution of <span class="math">\(\{x ~|~ a_j^T x = c_j, j \in J\}\)</span> where <span class="math">\(|J| &gt;0\)</span>. Now assume <span class="math">\(x_0\)</span> is not an extreme point such that <span class="math">\(x_0 = \lambda x_1 + (1-\lambda) x_2\)</span> for <span class="math">\(\lambda \in (0,1)\)</span> and <span class="math">\(x_1 \ne x_2\)</span> in the polyhedron.  Since <span class="math">\(x_0\)</span> is the unique solution to <span class="math">\(\{x ~|~ a_j^T x = c_j, j \in J\}\)</span>, we find there exists at least a constraint <span class="math">\(k \in J\)</span> such that <span class="math">\(a_k^T x_1 &lt; c_k\)</span>, but then <span class="math">\(a_k^T x_0=a_k^T [\lambda x_1 + (1-\lambda) x_2 ]&lt; c_k\)</span>, which contradicts with the fact that <span class="math">\(a_k^T x_0=c_k\)</span>. So <span class="math">\(x_0\)</span> has to be an extreme point.</p>
+<h1>A nonempty polyhedron has an extreme point if and only if it does not contain a line</h1>
+<p>Let the polyhedron be <span class="math">\(P=\{x ~|~ a_i^T x \le c_i, i=1,\dots, m \}\)</span> in <span class="math">\(\mathbb R^n\)</span>.</p>
+<ol>
+<li>If P contains a line then it does not have an extreme point</li>
+</ol>
+<p>If <span class="math">\(m&lt;n\)</span>, then there can be no unique basic solution and so there is no extreme point. Below  we assume <span class="math">\(m\ge n\)</span>. </p>
+<p>Let the line it contains be<span class="math">\(b+\theta d\)</span>. Since the line cannot cross any hyperplane, we have to have <span class="math">\(a_i^T (b+\theta d) \le c_i\)</span> for all <span class="math">\(\theta\)</span>. Hence, <span class="math">\(a_i^T d=0\)</span>. If we take any <span class="math">\(n\)</span> hyperplanes, since <span class="math">\(d\)</span> is orthogonal and thus linearly independent to the <span class="math">\(n\)</span> normal vectors, the <span class="math">\(n\)</span> vectors cannot be all linearly independent. Hence, there is no unique basic solution and so no extreme point.
+2. "If P does not have an extreme point, then it contains a line"</p>
+<p>P does not have an extreme point means that there is no basic solution, which in turn means that the list of normal vectors <span class="math">\(a_1, \dots, a_m\)</span> has dimension less than <span class="math">\(n\)</span>. So there exists a vector <span class="math">\(d\)</span> such that <span class="math">\(a_i^T d=0\)</span> for <span class="math">\(i=1,\dots, m\)</span>. Since the polyhedron is nonempty, let <span class="math">\(b \in P\)</span>. Then we can easily verify that the line <span class="math">\(b +\theta d\)</span> is in <span class="math">\(P=\{x ~|~ a_i^T x \le c_i, i=1,\dots, m \}\)</span>. </p>
+<h1>If an LP has a finite optimal solution, then an optimal solution is a BFS (assuming the feasible region has a BFS)</h1>
+<p>This directly follows from the fact that a BFS is an extreme point. If an optimal solution <span class="math">\(x^*\)</span> is not a BFS, then it can be written as some convex combination of the extreme points <span class="math">\(x^* = \sum_{i=1}^k \lambda_k x_k\)</span>. Since the objective function <span class="math">\(f(x)=c^Tx\)</span> is concave (and convex), by concavity, <span class="math">\(f(x^*) \ge \sum_{i=1}^k \lambda_k f(x_k)\)</span>. Because <span class="math">\(x^*\)</span> is optimal, <span class="math">\(f(x_k)=f(x^*)\)</span>.</p>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",
         indent = "0em",
         linebreak = "false";
@@ -189,32 +196,9 @@
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 </script>
-                        <a class="btn primary xsmall" href="/Some proofs I wrote for the LP course.html">more ...</a>
-                </div>
-        </div>
-        <hr />
-        <div class="article">
-                <h1><a href="/extreme-ray.html">Find an Extreme Ray of Unbounded LP</a></h1>
-                <div class="well small"><footer class="post-info">
-<span class="label">Date</span>
-<abbr class="published" title="2022-05-22T00:00:00-05:00">
-        <i class="icon-calendar"></i>Sun 22 May 2022
-</abbr>
-<span class="label">By</span>
-<a href="/author/gz.html"><i class="icon-user"></i>GZ</a>
-<span class="label">Category</span>
-<a href="/category/optimizatioon.html"><i class="icon-folder-open"></i>Optimizatioon</a>.
-
-
-<span class="label">Tags</span>
-	<a href="/tag/optimization.html"><i class="icon-tag"></i>optimization</a>
-</footer><!-- /.post-info --></div>
-                <div class="summary"><p>Find an extreme ray from unbounded LP</p>
-                        <a class="btn primary xsmall" href="/extreme-ray.html">more ...</a>
-                </div>
-        </div>
-        <hr />
-
+                </div><!-- /.entry-content -->
+        </article>
+</section>
         </div><!--/span-->
 
                 <div class="span3 well sidebar-nav" id="sidebar">
