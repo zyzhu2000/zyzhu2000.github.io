@@ -147,9 +147,9 @@ constraints in <span class="math">\(Ax\ge0\)</span> that are active. Because <sp
 \begin{aligned} \text{minimize } &amp;c^Tx \\ \text{s.t.} &amp;Ax \ge b \end{aligned}
 $$</div>
 <p>we can solve the auxiliary problem</p>
-<p>$$
-</p>
-<div class="math">\begin{aligned} \text{minimize } &amp;y^T A x \\ \text{s.t. }&amp; Ax \ge 0\\ &amp; c^Tx=-1 \end{aligned}</div>
+<div class="math">$$
+\begin{aligned} \text{minimize } &amp;y^T A x \\ \text{s.t. }&amp; Ax \ge 0\\ &amp; c^Tx=-1 \end{aligned}
+$$</div>
 <p>, where <span class="math">\(y \ge 0\)</span> is an arbitrary nonzero vector.</p>
 <p>The original problem, assumed to be feasible, is unbounded if and only if the auxiliary problem has a finite optimal solution <span class="math">\(x^*\)</span>. For any feasible solution <span class="math">\(x_0\)</span> of the original problem, <span class="math">\(x_0 + \theta x^*\)</span>  for <span class="math">\(\theta&gt;0\)</span> is also feasible to the original problem and the optimal value goes to <span class="math">\(-\infty\)</span> as <span class="math">\(\theta \rightarrow +\infty\)</span>.  If the auxiliary problem's optimal solution <span class="math">\(x^*\)</span>  is a BFS, then it is an extreme ray of the original problem; otherwise, it is a recession direction that causes the unboundedness but is not an extreme ray.</p>
 <p>Now, the last problem is how we can make sure the solution is a BFS. I can think of two options:</p>
