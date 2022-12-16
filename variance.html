@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Find All Optimal Solutions Using the Simplex Method</title>
+    <title>Bayesian estimate of Variance</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="GZ">
@@ -64,12 +64,12 @@
           <div class="nav-collapse">
             <ul class="nav">
                           <li class="divider-vertical"></li>
-                  <li >
+                  <li class="active">
                     <a href="/category/bayesian.html">
 						<i class="icon-folder-open icon-large"></i>Bayesian
 					</a>
                   </li>
-                  <li class="active">
+                  <li >
                     <a href="/category/optimizatioon.html">
 						<i class="icon-folder-open icon-large"></i>Optimizatioon
 					</a>
@@ -95,8 +95,8 @@
                         <h1>
                                 <a href=""
                                         rel="bookmark"
-                                        title="Permalink to Find All Optimal Solutions Using the Simplex Method">
-                                        Find All Optimal Solutions Using the Simplex Method
+                                        title="Permalink to Bayesian estimate of Variance">
+                                        Bayesian estimate of Variance
                                 </a>
                         </h1>
                 </header>
@@ -104,27 +104,34 @@
                 <div class="well">
 <footer class="post-info">
 <span class="label">Date</span>
-<abbr class="published" title="2022-06-01T00:00:00-05:00">
-        <i class="icon-calendar"></i>Wed 01 June 2022
+<abbr class="published" title="2021-10-01T00:00:00-05:00">
+        <i class="icon-calendar"></i>Fri 01 October 2021
 </abbr>
 <span class="label">By</span>
 <a href="/author/gz.html"><i class="icon-user"></i>GZ</a>
 <span class="label">Category</span>
-<a href="/category/optimizatioon.html"><i class="icon-folder-open"></i>Optimizatioon</a>.
+<a href="/category/bayesian.html"><i class="icon-folder-open"></i>Bayesian</a>.
 
 
 <span class="label">Tags</span>
-	<a href="/tag/optimization.html"><i class="icon-tag"></i>optimization</a>
+	<a href="/tag/bayesian.html"><i class="icon-tag"></i>bayesian</a>
 </footer><!-- /.post-info -->                </div>
-                <p>Suppose we have a standard form LP as follows and it has a finite optimal soluton <span class="math">\(x^*\)</span> that is a BFS. How can we find all the optimal solutions using Simplex?
-</p>
-<div class="math">$$
-\text{minimize } z=c^T x \\
-\text{s.t.} Ax = b \\
-x \ge 0
-$$</div>
-<p>If, at <span class="math">\(x^*\)</span>, the reduced cost for every nonbasic variable is positive, then we can conclude that <span class="math">\(x^*\)</span> is a unique optimal solution. This is because moving in every feasible direction involves increasing some nonbasic variables from zero to positive, which in turn will increase the objective value. Therefore, <span class="math">\(x^*\)</span> is a string local mimumum and, by convexity of the problem, is a uniqute global minimum. This is to say that if several BFSes are optimal, each optimal BFS must be adjacent to at least another optimal BFS. </p>
-<p>So we can modify the simplex method, so that it does not terminate on finding an optimal BFS. Instead, it keeps traversing other BFSes that have 0 reduced cost. At each optimal BFS, it will also need to check every recession direction that is orthognoal to the cost vector. By the resllution theorem, the set of all these optimal BFSes and recession directions defines a polyhedron that is the set of all the optimal solutions.</p>
+                <p>After observing <span class="math">\(n\)</span> data points, <span class="math">\(x_1,\dots, x_n\)</span>, we may observe another <span class="math">\(m\)</span> new data points, <span class="math">\(y_1,\dots, y_m\)</span> in the future. How can we predict the variance of these new points <span class="math">\(y_1,\dots, y_m\)</span>?</p>
+<p>One way to do this is to create an estimator. We can compute the average variance of all <span class="math">\(p(x|\theta)\)</span> for different <span class="math">\(\theta\)</span>'s drawn from the posterior distribution <span class="math">\(p(\theta|x_1,\dots, x_n)\)</span>. In equation, this is <span class="math">\(\mathbb E^{\theta|x_1,\dots,x_n}[\sigma^2(\theta)]\)</span>, where <span class="math">\(\sigma^2(\theta)\)</span> is the variance of the distribution <span class="math">\(p(x|\theta)\)</span>. This is in fact a Bayes estimator because it can be obtained by minimizing the posterior expected loss on a square loss function <span class="math">\(\delta^*(x_1,\dots, x_n)=\arg \min_{\delta} \mathbb E^{\theta|x_1,\dots,x_n}[(\sigma^2(\theta)-\delta(x_1,\dots, x_n))^2]=\mathbb E^{\theta|x_1,\dots,x_n}[\sigma^2(\theta)]\)</span> . Just like the example in the slides!</p>
+<p>It also makes intuitive sense. We know that “nature” uses some <span class="math">\(\theta^*\)</span> to generate the data (assuming that the model is not misspecified). We just do not know which <span class="math">\(\theta\)</span> it uses. Hence, we express our uncertainty in <span class="math">\(\theta\)</span> through the posterior distribution <span class="math">\(p(\theta|x_1,\dots, x_n)\)</span>. Since for any given <span class="math">\(\theta\)</span>, the variance of the samples is <span class="math">\(\sigma^2(\theta)\)</span>, it seems reasonable to produce an overall estimate by taking a weighted average of <span class="math">\(\sigma^2(\theta)\)</span> based on the posterior distribution of <span class="math">\(\theta\)</span>.</p>
+<p>From a sampling perspective, we can imagine the computation as follows:</p>
+<p>Draw a <span class="math">\(\theta’\)</span> from the posterior distribution <span class="math">\(p(\theta|x_1,\dots, x_n)\)</span>. This accounts for our uncertainty about the parameters
+Draw <span class="math">\(y_1,\dots, y_m\)</span> from the distribution <span class="math">\(p(x|\theta’)\)</span> and compete the variance <span class="math">\(var(y|\theta’)\)</span>.</p>
+<p>The variance <span class="math">\(var(y|\theta’)\)</span>. is the variance of future observations. It is what we want. But since we don’t know which <span class="math">\(\theta\)</span> is the true parameter, we repeat step 1 and 2 many times and take the average of the different <span class="math">\(var(y|\theta’)\)</span>s as our final estimate.</p>
+<p>By contrast, the predictive variance, or the variance of the posterior predictive distribution, is not a good estimator of the variance of future samples. It means something entirely different. One way to think of the posterior predictive distribution is that we believe “nature” generates data using some <span class="math">\(\theta^\)</span>, through <span class="math">\(p(x|\theta^)\)</span>, but we are uncertain which <span class="math">\(\theta\)</span> is <span class="math">\(\theta^*\)</span>, and so we represent our uncertainty about parameters using the posterior distribution <span class="math">\(p(\theta|x_1,\dots, x_n)\)</span>. Sampling from it involves two steps:</p>
+<p>Draw a <span class="math">\(\theta’\)</span> from the posterior distribution <span class="math">\(p(\theta|x_1,\dots, x_n)\)</span>. This accounts for our uncertainty about the parameters
+Draw <span class="math">\(x\)</span> from the distribution <span class="math">\(p(x|\theta’)\)</span>. This accounts for the uncertainty inherently in “nature”'s data generation process</p>
+<p>Therefore, the posterior predictive distribution can be thought of what the next data point is likely to be given our observed data <span class="math">\(x_1,\dots, x_n\)</span>. The variance <span class="math">\(var(x)\)</span> for <span class="math">\(x\)</span> generated this way is the predictive variance. It incorporates the two uncertainties. As <span class="math">\(n\)</span> grows larger, we tend to be more confident about the values of <span class="math">\(\theta\)</span>, as reflected by a peakier posterior. However, note that even if the posterior converges to a Dirac distribution as <span class="math">\(n \rightarrow \infty\)</span> (Bernstein-von Mises theorem), the predictive variance will still not be 0, because it also includes the uncertainty from step 2.</p>
+<p>As an extreme example, consider a Gaussian model with known variance <span class="math">\(\sigma_0^2\)</span> and a Gaussian prior. Although we do not know the mean of the Gaussian model “nature” used to generate the data, we do know the variance, and so we expect the variance of samples we observe in the future will also have variance <span class="math">\(\sigma_0^2\)</span>. But due to the uncertainty of the mean, the predictive variance will be larger than <span class="math">\(\sigma_0^2\)</span>.</p>
+<p>The law of total variance can further clarify things. The predictive variance can be decomposed as:</p>
+<p><span class="math">\( var(x) = \mathbb E[var(x|\theta)] + var(\mathbb E[x|\theta)) $ , where on the left hand side, the variance is taken over the posterior predictive distribution, whereas, on the right-hand side, the outer expectation and variance are taken over the posterior $p(\theta|x_1,\dots, x_n)\)</span> and the inner expectation and variance are taken over <span class="math">\(p(x|\theta)\)</span>.</p>
+<p>Here, the first term <span class="math">\(\mathbb E[var(x|\theta)]=\mathbb E^{\theta|x_1,\dots,x_n}[\sigma^2(\theta)]\)</span> is exactly our predicted variance of future samples, but then there is this extra term <span class="math">\(var(\mathbb E[x|\theta))\)</span> reflecting variance from parameter uncertainty.</p>
+<p>This is different from the computation of the prediction for <span class="math">\(x_{n+1}\)</span>, which is the mean of the posterior predictive distribution <span class="math">\(p(x|x_1,\dots, x_n)\)</span>. As the book points out, we can alternatively first compute <span class="math">\(\mu(\theta)=\mathbb E^{X|\theta} X\)</span> and then compute <span class="math">\(\mathbb E^{\theta|x_1,\dots, x_n} \mu(\theta)\)</span> and arrive at the same result. In other words, the mean of the posterior predictive distribution and the predicted mean of future examples are the same. In fact, it is a consequence of the law of total expectation; we have <span class="math">\(\mathbb E^X[X]=\mathbb E^{\theta} \mathbb E^{X|\theta} [X]\)</span>. It is just that the law of total variance is not the same as the law of total expectation, and so, <span class="math">\(var^X(x) \ge \mathbb E^\theta[var^{X|\theta}(x|\theta)]\)</span>, the two ways of calculation are different and mean different things.</p>
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",
         indent = "0em",
