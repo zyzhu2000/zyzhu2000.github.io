@@ -120,14 +120,18 @@
 <p>One way to do this is to create an estimator. We can compute the average variance of all <span class="math">\(p(x|\theta)\)</span> for different <span class="math">\(\theta\)</span>'s drawn from the posterior distribution <span class="math">\(p(\theta|x_1,\dots, x_n)\)</span>. In equation, this is <span class="math">\(\mathbb E^{\theta|x_1,\dots,x_n}[\sigma^2(\theta)]\)</span>, where <span class="math">\(\sigma^2(\theta)\)</span> is the variance of the distribution <span class="math">\(p(x|\theta)\)</span>. This is in fact a Bayes estimator because it can be obtained by minimizing the posterior expected loss on a square loss function <span class="math">\(\delta^*(x_1,\dots, x_n)=\arg \min_{\delta} \mathbb E^{\theta|x_1,\dots,x_n}[(\sigma^2(\theta)-\delta(x_1,\dots, x_n))^2]=\mathbb E^{\theta|x_1,\dots,x_n}[\sigma^2(\theta)]\)</span> . Just like the example in the slides!</p>
 <p>It also makes intuitive sense. We know that “nature” uses some <span class="math">\(\theta^*\)</span> to generate the data (assuming that the model is not misspecified). We just do not know which <span class="math">\(\theta\)</span> it uses. Hence, we express our uncertainty in <span class="math">\(\theta\)</span> through the posterior distribution <span class="math">\(p(\theta|x_1,\dots, x_n)\)</span>. Since for any given <span class="math">\(\theta\)</span>, the variance of the samples is <span class="math">\(\sigma^2(\theta)\)</span>, it seems reasonable to produce an overall estimate by taking a weighted average of <span class="math">\(\sigma^2(\theta)\)</span> based on the posterior distribution of <span class="math">\(\theta\)</span>.</p>
 <p>From a sampling perspective, we can imagine the computation as follows:</p>
-<p>Draw a <span class="math">\(\theta’\)</span> from the posterior distribution <span class="math">\(p(\theta|x_1,\dots, x_n)\)</span>. This accounts for our uncertainty about the parameters
-Draw <span class="math">\(y_1,\dots, y_m\)</span> from the distribution <span class="math">\(p(x|\theta’)\)</span> and compete the variance <span class="math">\(var(y|\theta’)\)</span>.</p>
+<ol>
+<li>Draw a <span class="math">\(\theta’\)</span> from the posterior distribution <span class="math">\(p(\theta|x_1,\dots, x_n)\)</span>. This accounts for our uncertainty about the parameters</li>
+<li>Draw <span class="math">\(y_1,\dots, y_m\)</span> from the distribution <span class="math">\(p(x|\theta’)\)</span> and compute the sample variance <span class="math">\(var(y|\theta’)\)</span>.</li>
+</ol>
 <p>The variance <span class="math">\(var(y|\theta’)\)</span>. is the variance of future observations. It is what we want. But since we don’t know which <span class="math">\(\theta\)</span> is the true parameter, we repeat step 1 and 2 many times and take the average of the different <span class="math">\(var(y|\theta’)\)</span>s as our final estimate.</p>
 <p>By contrast, the predictive variance, or the variance of the posterior predictive distribution, is not a good estimator of the variance of future samples. It means something entirely different. One way to think of the posterior predictive distribution is that we believe “nature” generates data using some <span class="math">\(\theta^*\)</span>, through <span class="math">\(p(x|\theta^)\)</span>, but we are uncertain which <span class="math">\(\theta\)</span> is <span class="math">\(\theta^*\)</span>, and so we represent our uncertainty about parameters using the posterior distribution <span class="math">\(p(\theta|x_1,\dots, x_n)\)</span>. Sampling from it involves two steps:</p>
-<p>Draw a <span class="math">\(\theta’\)</span> from the posterior distribution <span class="math">\(p(\theta|x_1,\dots, x_n)\)</span>. This accounts for our uncertainty about the parameters
-Draw <span class="math">\(x\)</span> from the distribution <span class="math">\(p(x|\theta’)\)</span>. This accounts for the uncertainty inherently in “nature”'s data generation process</p>
-<p>Therefore, the posterior predictive distribution can be thought of what the next data point is likely to be given our observed data <span class="math">\(x_1,\dots, x_n\)</span>. The variance <span class="math">\(var(x)\)</span> for <span class="math">\(x\)</span> generated this way is the predictive variance. It incorporates the two uncertainties. As <span class="math">\(n\)</span> grows larger, we tend to be more confident about the values of <span class="math">\(\theta\)</span>, as reflected by a peakier posterior. However, note that even if the posterior converges to a Dirac distribution as <span class="math">\(n \rightarrow \infty\)</span> (Bernstein-von Mises theorem), the predictive variance will still not be 0, because it also includes the uncertainty from step 2.</p>
-<p>As an extreme example, consider a Gaussian model with known variance <span class="math">\(\sigma_0^2\)</span> and a Gaussian prior. Although we do not know the mean of the Gaussian model “nature” used to generate the data, we do know the variance, and so we expect the variance of samples we observe in the future will also have variance <span class="math">\(\sigma_0^2\)</span>. But due to the uncertainty of the mean, the predictive variance will be larger than <span class="math">\(\sigma_0^2\)</span>.</p>
+<ol>
+<li>Draw a <span class="math">\(\theta’\)</span> from the posterior distribution <span class="math">\(p(\theta|x_1,\dots, x_n)\)</span>. This accounts for our uncertainty about the parameters</li>
+<li>Draw <span class="math">\(x\)</span> from the distribution <span class="math">\(p(x|\theta’)\)</span>. This accounts for the uncertainty inherently in “nature”'s data generation process</li>
+</ol>
+<p>Therefore, the posterior predictive distribution can be thought of what the next data point is likely to be given our observed data <span class="math">\(x_1,\dots, x_n\)</span>. The variance <span class="math">\(var(x)\)</span> for <span class="math">\(x\)</span> generated this way is the predictive variance. It incorporates the two uncertainties. As <span class="math">\(n\)</span> grows larger for our observations <span class="math">\(x_1, \dots, x_n\)</span>, we tend to be more confident about the values of <span class="math">\(\theta\)</span>, as reflected by a peakier posterior. However, note that even if the posterior converges to a Dirac distribution as <span class="math">\(n \rightarrow \infty\)</span> (Bernstein-von Mises theorem), the predictive variance will still not be 0, because it also includes the uncertainty from step 2.</p>
+<p>As an extreme example, consider that the data is generated from a Gaussian distribution with known variance <span class="math">\(\sigma_0^2\)</span> and an unknown mean, which has a Gaussian prior. Although we do not know the mean of the Gaussian model “nature” used to generate the data, we do know the variance, and so we expect the variance of samples we observe in the future will also have variance <span class="math">\(\sigma_0^2\)</span>. But due to the uncertainty of the mean, the predictive variance will be larger than <span class="math">\(\sigma_0^2\)</span>.</p>
 <p>The law of total variance can further clarify things. The predictive variance can be decomposed as:</p>
 <div class="math">$$var(x) = \mathbb E[var(x|\theta)] + var(\mathbb E[x|\theta))$$</div>
 <p>, where on the left hand side, the variance is taken over the posterior predictive distribution, whereas, on the right-hand side, the outer expectation and variance are taken over the posterior <span class="math">\(p(\theta|x_1,\dots, x_n)\)</span> and the inner expectation and variance are taken over <span class="math">\(p(x|\theta)\)</span>.</p>
@@ -216,14 +220,14 @@ Draw <span class="math">\(x\)</span> from the distribution <span class="math">\(
 </li>
 
 <li class="nav-header"><h4><i class="icon-tags icon-large"></i>Tags</h4></li>
-<li class="tag-1">
-    <a href="/tag/optimization.html">
-        <i class="icon-tag icon-large"></i>optimization
-    </a>
-</li>
 <li class="tag-4">
     <a href="/tag/bayesian.html">
         <i class="icon-tag icon-large"></i>bayesian
+    </a>
+</li>
+<li class="tag-1">
+    <a href="/tag/optimization.html">
+        <i class="icon-tag icon-large"></i>optimization
     </a>
 </li>
 
